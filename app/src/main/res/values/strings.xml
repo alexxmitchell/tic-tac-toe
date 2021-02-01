@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Tic-Tac-Toe</string>
     <string name="one_player">1-Player</string>
+    <string name="name">Name</string>
+    <string name="select_character">Select your character</string>
+    <string name="character_x">X</string>
+    <string name="character_o">O</string>
 </resources>
