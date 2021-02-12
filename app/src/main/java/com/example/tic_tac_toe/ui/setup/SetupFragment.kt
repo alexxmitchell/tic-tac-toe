@@ -5,39 +5,75 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultCallback
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.ActivityResultRegistry
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Button
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.viewModel
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
-import com.example.tic_tac_toe.R
-import com.example.tic_tac_toe.databinding.FragmentSetupBinding
-import com.example.tic_tac_toe.databinding.FragmentStartBinding
+
+
 
 //will hold the name and character selection
 class SetupFragment: Fragment() {
-    private val viewModel: SetupViewModel by activityViewModels()
-    private var _binding: FragmentSetupBinding? = null
-    private val binding get() = _binding!!
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentSetupBinding.inflate(inflater, container, false)
-        return binding.root
+    ): View? = ComposeView(requireContext()).apply {
+        setContent {
+            SetupScreen()
+        }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        binding.characterOButton.setOnClickListener {
-            viewModel.choosePlayingCharacter("O")
-            findNavController().navigate(R.id.action_setupFragment_to_gameFragment)
+    @Composable
+    fun SetupScreen() {
+        val viewModel: SetupViewModel = viewModel()
+        Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier.fillMaxHeight()) {
+            SelectCharacter()
+            Row {
+                CharacterButton(viewModel, "O")
+                CharacterButton(viewModel, "X")
+            }
         }
-
-        binding.characterXButton.setOnClickListener {
-            viewModel.choosePlayingCharacter("X")
-            findNavController().navigate(R.id.action_setupFragment_to_gameFragment)
+    }
+    @Composable
+    fun SelectCharacter() {
+        Text(
+            text = "Select your character",
+            style = TextStyle(fontSize = 22.sp),
+        )
+    }
+    @Composable
+    fun CharacterButton( viewModel: SetupViewModel, character: String) {
+        Button(
+            onClick = {viewModel.choosePlayingCharacter(character)},
+            modifier = Modifier.padding(20.dp)
+        ) {
+            Text(character)
         }
+    }
+    @Preview
+    @Composable
+    fun DefaultPreview(){
+        SetupScreen()
     }
 }
+
+

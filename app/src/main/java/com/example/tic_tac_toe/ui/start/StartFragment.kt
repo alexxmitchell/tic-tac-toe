@@ -11,6 +11,7 @@ import com.example.tic_tac_toe.databinding.FragmentStartBinding
 
 
 class StartFragment: Fragment() {
+
     private var _binding: FragmentStartBinding? = null
     private val binding get() = _binding!!
 
@@ -30,6 +31,11 @@ class StartFragment: Fragment() {
         binding.onePlayerButton.setOnClickListener {
             findNavController().navigate(R.id.action_startFragment_to_setupFragment)
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
 }
